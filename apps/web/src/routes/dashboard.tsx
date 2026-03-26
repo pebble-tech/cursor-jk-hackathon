@@ -5,7 +5,7 @@ import { Award, Check, Copy, ExternalLink, Eye, Info, LogOut, QrCode, Ticket } f
 import { toast } from 'sonner';
 
 import { ParticipantStatusEnum, UserRoleEnum } from '@base/core/config/constant';
-import { SITE_SHORT_NAME } from '@base/core/config/event';
+import { SHOW_CERTIFICATE_TAB, SITE_SHORT_NAME } from '@base/core/config/event';
 import { Badge } from '@base/ui/components/badge';
 import { Button } from '@base/ui/components/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@base/ui/components/card';
@@ -41,9 +41,78 @@ export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
 });
 
+type ParticipantCertificateUser = {
+  name: string;
+  isNameUpdated?: boolean | null;
+};
+
+function DashboardCertificateTabTrigger({ isCheckedIn }: { isCheckedIn: boolean }) {
+  return (
+    <TabsTrigger value="certificate" className="gap-2" disabled={!isCheckedIn}>
+      <Award className="h-4 w-4" />
+      Certificate
+    </TabsTrigger>
+  );
+}
+
+function DashboardCertificateTabContent({ user, isCheckedIn }: { user: ParticipantCertificateUser; isCheckedIn: boolean }) {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const nameUpdateMutation = useMutation({
+    mutationFn: (name: string) => updateProfileName({ data: { name } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['participant-dashboard'] });
+      toast.success('Name updated');
+    },
+    onError: () => {
+      toast.error('Failed to update name');
+    },
+  });
+
+  return (
+    <TabsContent value="certificate">
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-base font-medium text-gray-500">Your Certificate</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-6">
+          {isCheckedIn ? (
+            <>
+              <CertificateNameEditor
+                currentName={user.name}
+                onSave={async (newName) => {
+                  await nameUpdateMutation.mutateAsync(newName);
+                }}
+                isSaving={nameUpdateMutation.isPending}
+                isLocked={user.isNameUpdated ?? false}
+              />
+              {user.isNameUpdated ? (
+                <Button onClick={() => navigate({ to: '/certificate' })}>
+                  <Eye className="mr-2 h-4 w-4" />
+                  View & Download Certificate
+                </Button>
+              ) : (
+                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center">
+                  <p className="text-sm text-amber-800">
+                    Please save your certificate name above before viewing and downloading your certificate.
+                  </p>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="rounded-lg bg-gray-50 p-8 text-center">
+              <p className="text-gray-600">Check in at the event to unlock your certificate</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </TabsContent>
+  );
+}
+
 function DashboardPage() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['participant-dashboard'],
@@ -60,17 +129,6 @@ function DashboardPage() {
     },
     onError: () => {
       toast.error('Failed to update');
-    },
-  });
-
-  const nameUpdateMutation = useMutation({
-    mutationFn: (name: string) => updateProfileName({ data: { name } }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['participant-dashboard'] });
-      toast.success('Name updated');
-    },
-    onError: () => {
-      toast.error('Failed to update name');
     },
   });
 
@@ -121,7 +179,9 @@ function DashboardPage() {
 
       <main className="mx-auto max-w-2xl px-4 py-6">
         <Tabs defaultValue="qr" className="w-full">
-          <TabsList className="mb-6 grid w-full grid-cols-3">
+          <TabsList
+            className={`mb-6 grid w-full ${SHOW_CERTIFICATE_TAB ? 'grid-cols-3' : 'grid-cols-2'}`}
+          >
             <TabsTrigger value="qr" className="gap-2">
               <QrCode className="h-4 w-4" />
               My QR Code
@@ -135,10 +195,7 @@ function DashboardPage() {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="certificate" className="gap-2" disabled={!isCheckedIn}>
-              <Award className="h-4 w-4" />
-              Certificate
-            </TabsTrigger>
+            {SHOW_CERTIFICATE_TAB && <DashboardCertificateTabTrigger isCheckedIn={isCheckedIn} />}
           </TabsList>
 
           <TabsContent value="qr">
@@ -189,43 +246,9 @@ function DashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="certificate">
-            <Card>
-              <CardHeader className="text-center">
-                <CardTitle className="text-base font-medium text-gray-500">Your Certificate</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center gap-6">
-                {isCheckedIn ? (
-                  <>
-                    <CertificateNameEditor
-                      currentName={user.name}
-                      onSave={async (newName) => {
-                        await nameUpdateMutation.mutateAsync(newName);
-                      }}
-                      isSaving={nameUpdateMutation.isPending}
-                      isLocked={user.isNameUpdated ?? false}
-                    />
-                    {user.isNameUpdated ? (
-                      <Button onClick={() => navigate({ to: '/certificate' })}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        View & Download Certificate
-                      </Button>
-                    ) : (
-                      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center">
-                        <p className="text-sm text-amber-800">
-                          Please save your certificate name above before viewing and downloading your certificate.
-                        </p>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="rounded-lg bg-gray-50 p-8 text-center">
-                    <p className="text-gray-600">Check in at the event to unlock your certificate</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {SHOW_CERTIFICATE_TAB && (
+            <DashboardCertificateTabContent user={user} isCheckedIn={isCheckedIn} />
+          )}
         </Tabs>
       </main>
     </div>

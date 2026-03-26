@@ -30,3 +30,6 @@ export const OG_SITE_NAME = SITE_SHORT_NAME;
 export const OG_LOCALE = 'en_IN';
 
 export const OG_IMAGE_ALT = 'Cursor';
+
+/** When true, participant and ops dashboards show the Certificate tab. */
+export const SHOW_CERTIFICATE_TAB = false;
