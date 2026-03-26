@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Button } from '@base/ui/components/button';
 import { Input } from '@base/ui/components/input';
 
@@ -11,7 +12,7 @@ import { getDashboardUrlForUser } from '~/utils/auth-redirect';
 
 export const Route = createFileRoute('/login')({
   head: () => ({
-    meta: [{ title: 'Login - MY Hackathon' }],
+    meta: [{ title: `Login - ${SITE_SHORT_NAME}` }],
   }),
   beforeLoad: async () => {
     const session = await getServerSession();

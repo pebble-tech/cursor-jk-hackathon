@@ -1,7 +1,7 @@
 import type { UserRole } from './constant';
+import { HACKATHON_NAME } from './event';
 
-export const HACKATHON_NAME = 'Cursor x Anthropic Hackathon Malaysia';
-export const HACKATHON_DATE = 'December 6-7, 2025';
+export { HACKATHON_DATE, HACKATHON_NAME } from './event';
 
 interface CertificateContent {
   title: string;

@@ -5,6 +5,7 @@ import { Award, Check, Copy, ExternalLink, Eye, Info, LogOut, QrCode, Ticket } f
 import { toast } from 'sonner';
 
 import { ParticipantStatusEnum, UserRoleEnum } from '@base/core/config/constant';
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Badge } from '@base/ui/components/badge';
 import { Button } from '@base/ui/components/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@base/ui/components/card';
@@ -21,7 +22,7 @@ import { categoryIcons } from '~/utils/credit-category-icons';
 
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
-    meta: [{ title: 'Dashboard - MY Hackathon' }],
+    meta: [{ title: `Dashboard - ${SITE_SHORT_NAME}` }],
   }),
   beforeLoad: async () => {
     const session = await getServerSession();

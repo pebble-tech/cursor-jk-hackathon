@@ -1,3 +1,4 @@
+import { HACKATHON_DATE, HACKATHON_NAME, HACKATHON_VENUE } from '~/config/event';
 import { env } from '~/config/env';
 import { sendEmail } from '~/email/client';
 import { generateQRCodeBuffer } from '~/utils/qr-image';
@@ -60,7 +61,7 @@ export async function sendCheckinConfirmationEmail({
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You're Checked In! - Cursor Hackathon</title>
+  <title>You're Checked In! - ${HACKATHON_NAME}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -74,12 +75,12 @@ export async function sendCheckinConfirmationEmail({
               </div>
               <h1 style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #18181b;">You're Checked In!</h1>
               <p style="margin: 0 0 20px; font-size: 16px; line-height: 24px; color: #3f3f46;">${greeting},</p>
-              <p style="margin: 0 0 24px; font-size: 16px; line-height: 24px; color: #3f3f46;">Welcome to the Cursor Hackathon! You've been successfully checked in and your credits have been assigned.</p>
+              <p style="margin: 0 0 24px; font-size: 16px; line-height: 24px; color: #3f3f46;">Welcome to ${HACKATHON_NAME}! You've been successfully checked in and your credits have been assigned.</p>
               
               <div style="margin: 28px 0; padding: 20px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #18181b;">
                 <p style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #18181b;">Event Details</p>
-                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Date:</strong> December 6-7, 2025</p>
-                <p style="margin: 0; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Venue:</strong> Auditorium 1, Building 9, Monash University Malaysia</p>
+                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Date:</strong> ${HACKATHON_DATE}</p>
+                <p style="margin: 0; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Venue:</strong> ${HACKATHON_VENUE}</p>
               </div>
 
               <h2 style="margin: 28px 0 12px; font-size: 16px; font-weight: 600; color: #18181b;">Your Credits</h2>
@@ -118,11 +119,11 @@ export async function sendCheckinConfirmationEmail({
 
 You're Checked In!
 
-Welcome to the Cursor Hackathon! You've been successfully checked in and your credits have been assigned.
+Welcome to ${HACKATHON_NAME}! You've been successfully checked in and your credits have been assigned.
 
 EVENT DETAILS
-Date: December 6-7, 2025
-Venue: Auditorium 1, Building 9, Monash University Malaysia
+Date: ${HACKATHON_DATE}
+Venue: ${HACKATHON_VENUE}
 
 YOUR CREDITS
 You've been assigned ${assignedCodes.length} credit${assignedCodes.length !== 1 ? 's' : ''}. Use these codes to access partner services:
@@ -138,7 +139,7 @@ You can view all your credits and QR code anytime in your dashboard: ${env.APP_B
 
   return sendEmail({
     to,
-    subject: "You're Checked In! - Your Cursor Hackathon Credits",
+    subject: `You're Checked In! - Your ${HACKATHON_NAME} credits`,
     html,
     text,
     attachments: [

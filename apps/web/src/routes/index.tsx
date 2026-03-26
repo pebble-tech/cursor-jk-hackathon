@@ -4,11 +4,18 @@ import { CalendarDays, MapPin } from 'lucide-react';
 import { UserRoleEnum } from '@base/core/config/constant';
 import { Button } from '@base/ui/components/button';
 
+import {
+  HACKATHON_DATE,
+  HACKATHON_DURATION_LABEL,
+  HACKATHON_VENUE,
+  SITE_DOCUMENT_TITLE,
+} from '@base/core/config/event';
+
 import { getServerSession, type User } from '~/apis/auth';
 
 export const Route = createFileRoute('/')({
   head: () => ({
-    meta: [{ title: 'MY Hackathon - Cursor x Anthropic' }],
+    meta: [{ title: SITE_DOCUMENT_TITLE }],
   }),
   beforeLoad: async () => {
     const session = await getServerSession();
@@ -33,20 +40,22 @@ function IndexComponent() {
           </div>
 
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Cursor x Anthropic
+            Cursor Hackathon
             <br />
-            MY Hackathon
+            Kashmir 2026
           </h1>
         </div>
 
         <div className="space-y-3 text-gray-600">
           <div className="flex items-center justify-center gap-2">
             <CalendarDays className="h-5 w-5" />
-            <span className="text-lg">December 6-7, 2025</span>
+            <span className="text-lg">
+              {HACKATHON_DATE} · {HACKATHON_DURATION_LABEL}
+            </span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <MapPin className="h-5 w-5" />
-            <span className="text-lg">Monash University Malaysia, Auditorium 1, Building 9</span>
+            <span className="text-lg">{HACKATHON_VENUE}</span>
           </div>
         </div>
 

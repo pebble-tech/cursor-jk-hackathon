@@ -10,7 +10,7 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   QR_SECRET_KEY: z.string().min(32),
   RESEND_API_KEY: z.string().min(1),
-  EMAIL_FROM: z.string().default('Cursor MY <noreply@cursorhackathon.pebbletech.my>'),
+  EMAIL_FROM: z.string().default('Cursor Hackathon Kashmir <noreply@cursorhackathon.pebbletech.my>'),
 });
 
 export const env = EnvSchema.parse(process.env);

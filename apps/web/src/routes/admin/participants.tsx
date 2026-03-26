@@ -26,6 +26,7 @@ import {
   UserType,
   UserTypeEnum,
 } from '@base/core/config/constant';
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Button } from '@base/ui/components/button';
 import { DataTable } from '@base/ui/components/data-table';
 import {
@@ -70,7 +71,7 @@ import { generateSkippedRowsCSV, parseParticipantsCSV, type ParsedRow } from '~/
 
 export const Route = createFileRoute('/admin/participants')({
   head: () => ({
-    meta: [{ title: 'Participants - Admin Portal - MY Hackathon' }],
+    meta: [{ title: `Participants - Admin Portal - ${SITE_SHORT_NAME}` }],
   }),
   component: ParticipantsPage,
 });

@@ -3,6 +3,7 @@ import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 
 import { UserRoleEnum } from '@base/core/config/constant';
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Button } from '@base/ui/components/button';
 
 import { CertificateDisplay } from '~/components/certificate-display';
@@ -11,7 +12,7 @@ import { getOpsProfile } from '~/apis/ops/profile';
 
 export const Route = createFileRoute('/ops/certificate')({
   head: () => ({
-    meta: [{ title: 'Certificate - Ops Dashboard - MY Hackathon' }],
+    meta: [{ title: `Certificate - Ops Dashboard - ${SITE_SHORT_NAME}` }],
   }),
   beforeLoad: async () => {
     const session = await getServerSession();

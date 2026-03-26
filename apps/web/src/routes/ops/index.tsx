@@ -5,6 +5,7 @@ import { Award, CheckCircle2, Clock, Eye, QrCode, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CheckinTypeCategoryEnum, ParticipantTypeEnum } from '@base/core/config/constant';
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Button } from '@base/ui/components/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@base/ui/components/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@base/ui/components/dialog';
@@ -25,7 +26,7 @@ import { getOpsProfile, updateOpsProfileName } from '~/apis/ops/profile';
 
 export const Route = createFileRoute('/ops/')({
   head: () => ({
-    meta: [{ title: 'Check-in - Ops Dashboard - MY Hackathon' }],
+    meta: [{ title: `Check-in - Ops Dashboard - ${SITE_SHORT_NAME}` }],
   }),
   component: OpsDashboardPage,
 });

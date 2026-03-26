@@ -2,6 +2,7 @@ import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 
 import { UserRoleEnum } from '@base/core/config/constant';
+import { SITE_SHORT_NAME } from '@base/core/config/event';
 import { Button } from '@base/ui/components/button';
 
 import { getServerSession } from '~/apis/auth';
@@ -9,7 +10,7 @@ import { authClient } from '~/utils/auth-client';
 
 export const Route = createFileRoute('/ops')({
   head: () => ({
-    meta: [{ title: 'Ops Dashboard - MY Hackathon' }],
+    meta: [{ title: `Ops Dashboard - ${SITE_SHORT_NAME}` }],
   }),
   beforeLoad: async () => {
     const session = await getServerSession();

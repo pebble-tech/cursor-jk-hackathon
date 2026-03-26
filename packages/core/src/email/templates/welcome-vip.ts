@@ -1,3 +1,9 @@
+import {
+  EVENT_EMAIL_REGISTRATION_NOTE,
+  HACKATHON_DATE,
+  HACKATHON_NAME,
+  HACKATHON_VENUE,
+} from '~/config/event';
 import { sendEmail } from '~/email/client';
 import { generateQRCodeBuffer } from '~/utils/qr-image';
 
@@ -20,7 +26,7 @@ export async function sendVIPWelcomeEmail({ to, name, qrCodeValue }: SendVIPWelc
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Cursor Hackathon - VIP Pass</title>
+  <title>Welcome to ${HACKATHON_NAME} - VIP Pass</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -32,15 +38,15 @@ export async function sendVIPWelcomeEmail({ to, name, qrCodeValue }: SendVIPWelc
               <div style="display: inline-block; padding: 6px 12px; background-color: #fef3c7; border-radius: 9999px; margin-bottom: 16px;">
                 <span style="font-size: 12px; font-weight: 600; color: #92400e;">VIP GUEST</span>
               </div>
-              <h1 style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #18181b;">Welcome to Cursor Hackathon!</h1>
+              <h1 style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #18181b;">Welcome to ${HACKATHON_NAME}!</h1>
               <p style="margin: 0 0 20px; font-size: 16px; line-height: 24px; color: #3f3f46;">${greeting},</p>
-              <p style="margin: 0 0 24px; font-size: 16px; line-height: 24px; color: #3f3f46;">You're registered as a VIP guest for the Cursor Hackathon. We're honored to have you join us!</p>
+              <p style="margin: 0 0 24px; font-size: 16px; line-height: 24px; color: #3f3f46;">You're registered as a VIP guest for ${HACKATHON_NAME}. We're honored to have you join us!</p>
               
               <div style="margin: 28px 0; padding: 20px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #18181b;">
                 <p style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #18181b;">Event Details</p>
-                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Date:</strong> December 6-7, 2025</p>
-                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Venue:</strong> Level 2, Monash University Malaysia</p>
-                <p style="margin: 0; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Registration:</strong> Please arrive at 9:00 AM for registration on both days</p>
+                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Date:</strong> ${HACKATHON_DATE}</p>
+                <p style="margin: 0 0 4px; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Venue:</strong> ${HACKATHON_VENUE}</p>
+                <p style="margin: 0; font-size: 14px; line-height: 22px; color: #3f3f46;"><strong>Check-in:</strong> ${EVENT_EMAIL_REGISTRATION_NOTE}</p>
               </div>
 
               <h2 style="margin: 28px 0 12px; font-size: 16px; font-weight: 600; color: #18181b;">Your VIP QR Code</h2>
@@ -64,14 +70,14 @@ export async function sendVIPWelcomeEmail({ to, name, qrCodeValue }: SendVIPWelc
 
   const text = `${greeting},
 
-Welcome to Cursor Hackathon - VIP Guest!
+Welcome to ${HACKATHON_NAME} - VIP Guest!
 
-You're registered as a VIP guest for the Cursor Hackathon. We're honored to have you join us!
+You're registered as a VIP guest for ${HACKATHON_NAME}. We're honored to have you join us!
 
 EVENT DETAILS
-Date: December 6-7, 2025
-Venue: Level 2, Monash University Malaysia
-Registration: Please arrive at 9:00 AM for registration on both days
+Date: ${HACKATHON_DATE}
+Venue: ${HACKATHON_VENUE}
+Check-in: ${EVENT_EMAIL_REGISTRATION_NOTE}
 
 YOUR VIP QR CODE
 Show your QR code for check-in at the event. Your QR code is permanent and never expires.
@@ -82,7 +88,7 @@ Save this email or screenshot your QR code for easy access during the event.`;
 
   return sendEmail({
     to,
-    subject: 'Welcome to Cursor Hackathon - Your VIP Pass',
+    subject: `Welcome to ${HACKATHON_NAME} - Your VIP Pass`,
     html,
     text,
     attachments: [

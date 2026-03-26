@@ -7,6 +7,16 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from '@base/ui/components/sonner';
 import uiCss from '@base/ui/tailwind.css?url';
 
+import {
+  OG_IMAGE_ALT,
+  OG_LOCALE,
+  OG_SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_DOCUMENT_TITLE,
+  SITE_KEYWORDS,
+  SITE_META_AUTHOR,
+} from '@base/core/config/event';
+
 import appCss from '~/styles/app.css?url';
 
 export const Route = createRootRouteWithContext<{
@@ -14,9 +24,8 @@ export const Route = createRootRouteWithContext<{
 }>()({
   head: () => {
     const baseUrl = process.env.APP_BASE_URL || 'https://cursorhackathon.pebbletech.my';
-    const siteTitle = 'MY Hackathon - Cursor x Anthropic';
-    const siteDescription =
-      'Join us for MY Hackathon, a two-day innovation event on December 6-7, 2025 at Monash University Malaysia. Build amazing projects with Cursor and Anthropic.';
+    const siteTitle = SITE_DOCUMENT_TITLE;
+    const siteDescription = SITE_DESCRIPTION;
     const ogImage = `${baseUrl}/cursor-logo.png`;
 
     return {
@@ -33,25 +42,25 @@ export const Route = createRootRouteWithContext<{
         },
         {
           name: 'keywords',
-          content: 'hackathon, cursor, anthropic, monash university, malaysia, coding, innovation, technology',
+          content: SITE_KEYWORDS,
         },
         {
           name: 'author',
-          content: 'Cursor x Anthropic',
+          content: SITE_META_AUTHOR,
         },
         { property: 'og:type', content: 'website' },
         { property: 'og:title', content: siteTitle },
         { property: 'og:description', content: siteDescription },
         { property: 'og:image', content: ogImage },
-        { property: 'og:image:alt', content: 'Cursor x Anthropic Logo' },
+        { property: 'og:image:alt', content: OG_IMAGE_ALT },
         { property: 'og:url', content: baseUrl },
-        { property: 'og:site_name', content: 'MY Hackathon' },
-        { property: 'og:locale', content: 'en_MY' },
+        { property: 'og:site_name', content: OG_SITE_NAME },
+        { property: 'og:locale', content: OG_LOCALE },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: siteTitle },
         { name: 'twitter:description', content: siteDescription },
         { name: 'twitter:image', content: ogImage },
-        { name: 'twitter:image:alt', content: 'Cursor x Anthropic Logo' },
+        { name: 'twitter:image:alt', content: OG_IMAGE_ALT },
       ],
       links: [
         { rel: 'stylesheet', href: appCss },
